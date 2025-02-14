@@ -12,16 +12,10 @@ En este ejercicio, explotaremos una vulnerabilidad en un programa en C que usa l
 ### **Desactivar Protecciones (Solo para Pruebas en Entorno Controlado)**
 Algunas protecciones modernas dificultan la explotación de buffer overflows. Para facilitar la prueba:
 
-1. **Desactivar ASLR (Address Space Layout Randomization)**:
+  **Desactivar ASLR (Address Space Layout Randomization)**:
    ```bash
    echo 0 | sudo tee /proc/sys/kernel/randomize_va_space
    ```
-2. **Compilar el programa sin protecciones**:
-   ```bash
-   gcc -fno-stack-protector -z execstack -o vulnerable vulnerable.c
-   ```
-   - `-fno-stack-protector`: Desactiva los canarios en la pila.
-   - `-z execstack`: Permite la ejecución en la pila.
 
 ## 3. Código Vulnerable en C
 Guarda el siguiente código como `vulnerable.c`:
@@ -50,7 +44,7 @@ int main() {
 
 Compila el programa:
 ```bash
-gcc -fno-stack-protector -z execstack -o vulnerable vulnerable.c
+gcc -fno-stack-protector -z execstack -o vulnerable vulnerable.c -Wno-implicit-function-declaration
 ```
 
 
