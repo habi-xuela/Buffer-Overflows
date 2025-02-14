@@ -5,7 +5,7 @@ Un **Stack-Based Buffer Overflow** ocurre cuando un programa escribe más datos 
 
 En este ejercicio, explotaremos una vulnerabilidad en un programa en C que usa la función insegura `gets()`, permitiendo sobrescribir la dirección de retorno y ejecutar una shell.
 
----
+
 
 ## 2. Preparación del Entorno
 
@@ -22,8 +22,6 @@ Algunas protecciones modernas dificultan la explotación de buffer overflows. Pa
    ```
    - `-fno-stack-protector`: Desactiva los canarios en la pila.
    - `-z execstack`: Permite la ejecución en la pila.
-
----
 
 ## 3. Código Vulnerable en C
 Guarda el siguiente código como `vulnerable.c`:
@@ -55,7 +53,7 @@ Compila el programa:
 gcc -fno-stack-protector -z execstack -o vulnerable vulnerable.c
 ```
 
----
+
 
 ## 4. Explotación con Python
 
@@ -89,24 +87,18 @@ python3 exploit.py
 ```
 Si todo sale bien, obtendremos una shell (`/bin/sh`).
 
----
+
 
 ## 5. Explicación de la Explotación
 1. **El buffer es de 64 bytes**, pero la dirección de retorno está después de 4 bytes adicionales, por eso enviamos 68 (`64 + 4`).  
 2. **Sobrescribimos la dirección de retorno con la de `shell()`**.
 3. **Al ejecutar el programa con la carga maliciosa**, el flujo de ejecución salta a `shell()`, dándonos acceso a una shell del sistema.
 
----
+
 
 ## 6. Protecciones Contra Stack Overflow
 1. **Canarios en la Pila**: Detectan corrupción antes de que la función retorne.
 2. **ASLR (Address Space Layout Randomization)**: Aleatoriza direcciones de memoria para evitar predecir la dirección del shellcode.
 3. **DEP (Data Execution Prevention)**: Bloquea la ejecución de código en la pila.
 
----
-
-## 7. Ejercicios Adicionales
-- **Modificar el exploit para inyectar shellcode en la pila.**
-- **Bypass de ASLR obteniendo direcciones filtradas en la salida del programa.**
-- **Ejemplo con Heap Overflow para ver otro tipo de explotación.**
 
